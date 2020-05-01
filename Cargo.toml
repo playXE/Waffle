@@ -8,6 +8,7 @@ edition = "2018"
 
 [dependencies]
 cgc-single-threaded = "0.1"
+hashlink = "*"
 [features]
 jsvalue64 = []
 jsvalue32-64 = []

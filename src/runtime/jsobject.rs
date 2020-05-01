@@ -18,3 +18,18 @@ pub trait ObjectTrait {
 
     fn set_prototype_of(&mut self, to: JSValue) -> bool;
 }
+
+pub struct JSObject {
+
+}
+
+
+pub enum JSObjectKind {
+    Array,
+    String,
+    Symbol,
+    Error,
+    Boolean,
+    Number,
+    Normal,
+}

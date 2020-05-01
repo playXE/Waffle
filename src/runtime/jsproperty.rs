@@ -3,13 +3,8 @@ use super::jsvalue::*;
 use cgc::api::Handle;
 /// The property descriptor.
 pub struct JSProperty {
-    /// Location inside inline slots of an object.
-    ///
-    /// To change property use `property.base.store_direct(property.slot,your_value)`.
-    /// And to load property use `property.base.direct(property.slot)`.
-    pub slot: u32,
+    pub value: Option<JSValue>,
     /// Base object that contains this property.
-    pub base: Option<Handle<Cell>>,
     pub getter: Option<JSValue>,
     pub setter: Option<JSValue>,
     pub configurable: Option<bool>,
@@ -20,8 +15,7 @@ pub struct JSProperty {
 impl JSProperty {
     pub fn new() -> Self {
         Self {
-            slot: u32::max_value(),
-            base: None,
+            value: None,
             getter: None,
             setter: None,
             configurable: None,
@@ -45,13 +39,8 @@ impl JSProperty {
         self
     }
 
-    pub fn slot(mut self, slot: u32) -> Self {
-        self.slot = slot;
-        self
-    }
-
-    pub fn base(mut self, base: Handle<Cell>) -> Self {
-        self.base = Some(base);
+    pub fn value(mut self, value: JSValue) -> Self {
+        self.value = Some(value	);
         self
     }
 

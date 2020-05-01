@@ -43,9 +43,9 @@ checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
 
 [[package]]
 name = "cgc-single-threaded"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97ace6d924c269449c831947f6d596edb4f2c293994014f6061b09677c72e384"
+checksum = "a1e36574b8028ae5fa92bea2ad22c0217da1592a85cff7b09f2bbc0187e88473"
 dependencies = [
  "fxhash",
  "kernel32-sys",

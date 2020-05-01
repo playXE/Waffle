@@ -191,6 +191,10 @@ impl JSValue {
         assert!(self.is_cell(), "Value payload is not a cell!");
         unsafe { std::mem::transmute(self.payload()) }
     }
+    pub fn as_cell_ref(&self) -> &Handle<Cell> {
+        assert!(self.is_cell(), "Value payload is not a cell!");
+        unsafe { std::mem::transmute(&self.payload()) }
+    }
 
     pub fn new_double(f: f64) -> Self {
         assert!(!is_impure_nan(f));
@@ -425,6 +429,10 @@ impl JSValue {
         assert!(self.is_cell());
         unsafe { self.u.cell }
     }
+    pub fn as_cell_ref(&self) -> &Handle<Cell> {
+        assert!(self.is_cell());
+        unsafe { &self.u.cell }
+    }
 
     pub fn is_any_int(&self) -> bool {
         if self.is_int32() {
@@ -577,3 +585,15 @@ pub fn try_convert_to_i52(number: f64) -> i64 {
 
     as_int64
 }
+
+use cgc::api::{Finalizer, Traceable, Tracer};
+
+impl Traceable for JSValue {
+    fn trace_with(&self, tracer: &mut Tracer) {
+        if self.is_cell() {
+            tracer.trace(self.as_cell_ref());
+        }
+    }
+}
+
+impl Finalizer for JSValue {}

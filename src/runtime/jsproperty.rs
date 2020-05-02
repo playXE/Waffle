@@ -1,6 +1,8 @@
 use super::cell::Cell;
 use super::jsvalue::*;
 use cgc::api::Handle;
+
+#[derive(Clone)]
 /// The property descriptor.
 pub struct JSProperty {
     pub value: Option<JSValue>,
@@ -40,7 +42,7 @@ impl JSProperty {
     }
 
     pub fn value(mut self, value: JSValue) -> Self {
-        self.value = Some(value	);
+        self.value = Some(value);
         self
     }
 
@@ -67,7 +69,7 @@ impl JSProperty {
     }
 
     pub fn is_data(&self) -> bool {
-        self.slot != u32::max_value() || self.writable.is_some()
+        self.value.is_some() || self.writable.is_some()
     }
 
     pub fn is_generic(&self) -> bool {

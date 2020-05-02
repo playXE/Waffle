@@ -1,6 +1,7 @@
 //! JSValue implementation is exactly the same as in JSC and uses NaN-boxing.
-
 use super::cell::*;
+use super::jsobject::*;
+use super::jsproperty::*;
 use super::pure_nan::*;
 use cgc::api::Handle;
 #[cfg(all(target_pointer_width = "64", feature = "jsvalue32-64"))]
@@ -543,6 +544,79 @@ impl JSValue {
             self.as_int32() as f64
         } else {
             self.as_double()
+        }
+    }
+
+    pub fn is_string(&self) -> bool {
+        if self.is_cell() {
+            match &*self.as_cell() {
+                Cell::String(_) => true,
+                _ => false,
+            }
+        } else {
+            false
+        }
+    }
+
+    pub fn is_array(&self) -> bool {
+        if self.is_cell() {
+            match &*self.as_cell() {
+                Cell::Object(obj) => obj.is_array(),
+                _ => false,
+            }
+        } else {
+            false
+        }
+    }
+
+    pub fn get_property(&self, rt: &super::Runtime, name: &str) -> Option<JSProperty> {
+        if (self.is_string() || self.is_array()) && name == "length" {
+            let cell = self.as_cell();
+            match &*cell {
+                Cell::String(s) => {
+                    return Some(JSProperty::default().value(JSValue::new_int(s.len() as i32)))
+                }
+                Cell::Object(obj) => match obj.kind {
+                    JSObjectKind::Array(ref arr) => {
+                        return Some(
+                            JSProperty::default().value(JSValue::new_int(arr.len() as i32)),
+                        )
+                    }
+                    _ => (),
+                },
+            }
+        }
+
+        let object = self.get_object(rt);
+        if object.is_undefined() || !object.is_cell() {
+            return None;
+        }
+        let cell = object.as_cell();
+        match &*cell {
+            Cell::Object(object) => match object.properties.get(name) {
+                Some(val) => return Some(val.clone()),
+                None => match object.internal.get("__proto__") {
+                    Some(value) => return value.get_property(rt, name),
+                    _ => return None,
+                },
+            },
+            _ => (),
+        }
+        None
+    }
+
+    pub fn get_object(&self, rt: &super::Runtime) -> JSValue {
+        if self.is_number() {
+            rt.number
+        } else if self.is_boolean() {
+            rt.boolean
+        } else if self.is_cell() {
+            match &*self.as_cell() {
+                Cell::String(_) => rt.string,
+                Cell::Object(_) => *self,
+            }
+        } else {
+            JSValue::undefined()
         }
     }
 }

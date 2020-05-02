@@ -139,6 +139,7 @@ name = "jsrs"
 version = "0.1.0"
 dependencies = [
  "cgc-single-threaded",
+ "fxhash",
  "hashlink",
 ]
 

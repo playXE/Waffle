@@ -18,3 +18,9 @@ pub struct Runtime {
     pub symbol: JSValue,
     pub global: JSValue,
 }
+
+impl Runtime {
+    pub fn execute(&mut self, _: JSValue, _: JSValue, _: &[JSValue]) -> Result<JSValue, JSValue> {
+        Ok(JSValue::undefined())
+    }
+}

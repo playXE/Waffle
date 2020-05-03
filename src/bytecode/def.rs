@@ -9,6 +9,26 @@ macro_rules! op_list {
                 },
                 str: "get_scope"
             },
+            PushScope {
+                args: {
+                    src: VirtualRegister
+                },
+                str: "push_scope"
+            },
+            PopScope {
+                args: {
+                    dst: VirtualRegister
+                },
+                str: "pop_scope"
+            },
+            ResolveScope {
+                args: {
+                    #[doc="Register where to put scope"]
+                    dst: VirtualRegister,
+                    #[doc="Variable name"]
+                    src: VirtualRegister,
+                }
+            },
             GetArgument: {
                 args: {
                     dst: VirtualRegister,
@@ -107,7 +127,144 @@ macro_rules! op_list {
                     srcdst: VirtualRegister
                 },
                 str: "dec"
+            },
+            PutById {
+                args: {
+                    value: VirtualRegister,
+                    base: VirtualRegister,
+                    id: VirtualRegister,
+                    fdbk: u32
+                },
+                str: "put_by_id"
+            },
+            GetById {
+                args: {
+                    dst: VirtualRegister,
+                    base: VirtualRegister
+                    id: VirtualRegister,
+                    fdbk: u32
+                },
+                str: "get_by_id"
+            },
+            PutByVal {
+                args: {
+                    value: VirtualRegister,
+                    base: VirtualRegister,
+                    key: VirtualRegister
+                },
+                str: "put_by_val"
+            },
+            GetByVal {
+                args: {
+                    dst: VirtualRegister,
+                    base: VirtualRegister,
+                    key: VirtualRegister
+                },
+                str: "get_by_val"
+            },
+            DelById {
+                args: {
+                    dst: VirtualRegister,
+                    base: VirtualRegister,
+                    property: VirtualRegister
+                },
+                str: "del_by_id",
+            },
+            DelByVal {
+                args: {
+                    dst: VirtualRegister,
+                    base: VirtualRegister,
+                    val: VirtualRegister
+                },
+                str: "del_by_val"
+            },
+            PutSetterByVal {
+                args: {
+                    base: VirtualRegister,
+                    property: VirtualRegister,
+                    accessor: VirtualRegister
+                },
+                str: "put_setter_by_val"
             }
+            PutGetterByVal {
+                args: {
+                    base: VirtualRegister,
+                    property: VirtualRegister,
+                    accessor: VirtualRegister
+                },
+                str: "put_getter_by_val"
+            },
+            Jmp {
+                args: {
+                    label: i32
+                },
+                str: "jmp"
+            },
+            JTrue {
+                args: {
+                    condition: VirtualRegister,
+                    label: i32
+                },
+                str: "jtrue"
+            },
+            JFalse {
+                args: {
+                    condition: VirtualRegister,
+                    label: i32
+                },
+                str: "jfalse"
+            },
+            JEQNull {
+                args: {
+                    value: VirtualRegister,
+                    label: i32
+                },
+                str: "jeqnull"
+            },
+            JNEQNull {
+                args: {
+                    value: VirtualRegister,
+                    label: i32
+                },
+                str: "jneqnull"
+            },
+            JUndefinedOrNull {
+                args: {
+                    value: VirtualRegister,
+                    label: i32
+                },
+                str: "jundefornull"
+            },
+            JNUndefinedOrNull {
+                args: {
+                    value: VirtualRegister,
+                    label: i32
+                },
+                str: "jnundefornull"
+            },
+            op_group => BinaryJmp {
+                [
+                    Jeq("jeq"),
+                    JStrictEq("jstricteq"),
+                    Jneq("jneq"),
+                    JNStrictEq("jnstricteq"),
+                    JLess("jless"),
+                    JLessEq("jlesseq"),
+                    JGreaterEq("jgreatereq"),
+                    JNLess("jnless"),
+                    JNLessEq("jnlesseq"),
+                    JNGreater("jngreater"),
+                    JNGreaterEq("jngreatereq"),
+                    JBelow("jbelow"),
+                    JBelowEq("jbeloweq")
+                ],
+                args: {
+                    lhs: VirtualRegister,
+                    rhs: VirtualRegister,
+                    label: i32
+                }
+            }
+
 
         }
     };

@@ -6,7 +6,6 @@ use cgc::api::Handle;
 /// The property descriptor.
 pub struct JSProperty {
     pub value: Option<JSValue>,
-    /// Base object that contains this property.
     pub getter: Option<JSValue>,
     pub setter: Option<JSValue>,
     pub configurable: Option<bool>,

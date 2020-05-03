@@ -27,8 +27,52 @@ macro_rules! op_list {
                     dst: VirtualRegister,
                     #[doc="Variable name"]
                     src: VirtualRegister,
-                }
+                },
+                str: "resolve_scope"
             },
+            DeclareInScope {
+                args: {
+                    src: VirtualRegister,
+                    scope: VirtualRegister,
+                    variable: VirtualRegister
+                },
+                str: "declare_in_scope"
+            },
+            GetFromScope {
+                args: {
+                    dst: VirtualRegister,
+                    scope: VirtualRegister,
+                    variable: VirtualRegister
+                },
+                str: "get_from_scope"
+            },
+            PutToScope {
+                args: {
+                    src: VirtualRegister,
+                    scope: VirtualRegister,
+                    variable: VirtualRegister,
+                },
+                str: "put_to_scope"
+            },
+            GetParentScope {
+                args: {
+                    dst: VirtualRegister,
+                    src: VirtualRegister
+                },
+                str: "get_parent_scope"
+            },
+            GetSuper {
+                args: {
+                    dst: VirtualRegister
+                },
+                str: "get_super"
+            },
+            GetThis {
+                args: {
+                    dst: VirtualRegister
+                },
+                str: "get_this"
+            }
             GetArgument: {
                 args: {
                     dst: VirtualRegister,
@@ -263,8 +307,23 @@ macro_rules! op_list {
                     rhs: VirtualRegister,
                     label: i32
                 }
-            }
-
+            },
+            ForInSetup {
+                args: {
+                    iterator: VirtualRegister,
+                    iterable: VirtualRegister,
+                    #[doc = "is this for of or for in loop?"]
+                    for_of: bool
+                },
+                str: "for_in_setup"
+            },
+            ForInNext {
+                args: {
+                    next: VirtualRegister,
+                    iterator: VirtualRegister
+                },
+                str: "for_in_next"
+            },
 
         }
     };

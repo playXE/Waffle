@@ -60,5 +60,5 @@ impl Traceable for JSObject {
         }
     }
 }
-
+    
 impl Finalizer for JSObject {}

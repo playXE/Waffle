@@ -1,4 +1,5 @@
 pub mod cell;
+pub mod environment;
 pub mod jsobject;
 pub mod jsproperty;
 pub mod jsvalue;

@@ -29,6 +29,9 @@ pub struct JSObject {
     pub internal: FxHashMap<String, JSValue>,
     pub property: hashlink::LinkedHashMap<String, JSProperty>,
     pub prototype: Option<JSValue>,
+    pub extensible: bool,
+    pub class: String,
+    pub class_object: &'static super::vtable::VTable,
 }
 
 impl JSObject {
@@ -37,6 +40,21 @@ impl JSObject {
             JSObjectKind::Array(_) => true,
             _ => false,
         }
+    }
+
+    pub(crate) fn _read(&self, name: &str) -> Option<JSProperty> {
+        self.property.get(name).cloned()
+    }
+    pub(crate) fn _write(&mut self, name: &str, prop: JSProperty) {
+        if self.property.contains_key(name) {
+            self.property[name] = prop;
+        } else {
+            self.property.insert(name.to_owned(), prop);
+        }
+    }
+
+    pub(crate) fn _exist(&self, name: &str) -> bool {
+        self.property.contains_key(name)
     }
 }
 

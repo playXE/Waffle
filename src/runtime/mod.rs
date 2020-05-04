@@ -4,7 +4,7 @@ pub mod jsobject;
 pub mod jsproperty;
 pub mod jsvalue;
 pub mod pure_nan;
-
+pub mod vtable;
 use cgc::heap::Heap;
 use jsobject::*;
 use jsproperty::*;

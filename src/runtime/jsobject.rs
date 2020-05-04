@@ -27,8 +27,8 @@ pub trait ObjectTrait {
 pub struct JSObject {
     pub kind: JSObjectKind,
     pub internal: FxHashMap<String, JSValue>,
-    pub properties: FxHashMap<String, JSProperty>,
-    pub sym_properties: FxHashMap<i32, JSProperty>,
+    pub property: hashlink::LinkedHashMap<String, JSProperty>,
+    pub prototype: Option<JSValue>,
 }
 
 impl JSObject {
@@ -60,5 +60,4 @@ impl Traceable for JSObject {
         }
     }
 }
-    
 impl Finalizer for JSObject {}

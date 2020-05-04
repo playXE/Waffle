@@ -593,7 +593,7 @@ impl JSValue {
         }
         let cell = object.as_cell();
         match &*cell {
-            Cell::Object(object) => match object.properties.get(name) {
+            Cell::Object(object) => match object.property.get(name) {
                 Some(val) => return Some(val.clone()),
                 None => match object.internal.get("__proto__") {
                     Some(value) => return value.get_property(rt, name),
